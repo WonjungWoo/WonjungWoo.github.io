@@ -2,17 +2,6 @@
 layout: default
 ---
 <div class="post">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
 
   <article>
     {% if page.profile %}
@@ -23,12 +12,12 @@ layout: default
             {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
           {% else %}
             {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
+      rounded ms-5' %}
           {% endif %}
           {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
       30vw, 95vw"{% endcapture %}
           {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
+            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image max-width="180px"
             cache_bust=true
           %}
         {% endif %}
@@ -38,11 +27,25 @@ layout: default
       </div>
     {% endif %}
 
-    <div class="clearfix">{{ content }}</div>
+    <div class="clearfix">
+      <header class="post-header">
+        <h1 class="post-title">
+          {% if site.title == 'blank' %}
+            <span class="font-weight-bold">{{ site.first_name }} {{ site.middle_name }}
+            {{ site.last_name }}</span>
+          {% else %}
+            {{ site.title }}
+          {% endif %}
+        </h1>
+        <p class="desc">{{ page.subtitle }}</p>
+      </header>
+      {{ content }}
+    </div>
 
     <!-- News -->
     {% if page.announcements and page.announcements.enabled %}
-      <h2>
+      <hr style="border-top: 1px solid rgba(0,0,0,0.2);">
+      <h2 style="font-size: 1.5rem; font-weight: bold; text-transform: uppercase;">
         <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
       </h2>
       {% include news.liquid limit=true %}
@@ -57,9 +60,10 @@ layout: default
     {% endif %}
 
     <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
+    {% if page.publications %}
+      <hr style="border-top: 1px solid rgba(0,0,0,0.2);">
+      <h2 style="font-size: 1.5rem; font-weight: bold; text-transform: uppercase;">
+        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">publications</a>
       </h2>
       {% include selected_papers.liquid %}
     {% endif %}
